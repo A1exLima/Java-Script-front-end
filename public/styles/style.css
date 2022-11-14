@@ -28,9 +28,20 @@ main {
     border-radius: 10px;
 }
 
+#desc{
+	color: #FFF;
+	font-weight: 600;
+    font-size: 1.1rem;
+	margin-bottom: 20px;
+	height: 32px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 #form{
 	display: flex;
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 form input {
@@ -57,15 +68,19 @@ form button {
     cursor: pointer;
 }
 
-#desc{
-	color: #FFF;
-	font-weight: 600;
-    font-size: 1.1rem;
-	margin-bottom: 20px;
-	height: 32px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+.errors ul {
+	margin: 0px;
+}
+
+.errors ul li {
+	list-style: none;
+	text-align: start;
+	font-size: 0.7rem;
+	color:#ffffff;
+	position: relative;
+	right:40px;
+	width: 200px;
+	margin-bottom: 5px;
 }
 
 #task-list{
