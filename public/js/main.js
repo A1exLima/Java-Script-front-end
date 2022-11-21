@@ -1,3 +1,18 @@
+/**
+ * Questões de Usabilidade:
+  
+ * OK 1 - O campo já deve iniciar com foco
+ * OK 2 - Limpar o campo sempre que uma tarefa nova seja adicionada
+ 
+ * Questões de funcionalidade
+ * 
+ * 1 - Marcar tarefa como feita
+ * 2 - Remover uma tarefa
+ * 3 - Cada tarefa deve ter um id (identificador único para a tarefa)
+ 
+ **/
+
+
 //CAPTURA DE ELEMENTOS HTML
 const btnSalvar = document.getElementById('btn');
 const formTexto = document.getElementById('text');
@@ -17,13 +32,15 @@ const loadTarefas = () => {
         arrayTarefas = [];
         localStorage.setItem(chaveLocal, '[]');
 
-    }else {
+    } else {
 
         for (const tarefa of arrayTarefas) {
 
             exibirTarefa(tarefa);
         };
     }
+
+    formTexto.focus();
 }
 
 const clickSalvar = (event) => {
@@ -37,13 +54,30 @@ const clickSalvar = (event) => {
     exibirTarefa(tarefa);
 
     formTexto.value = null;
+    
+}
+
+const geradorId = () => {
+
+    let novoId;
+
+    if( arrayTarefas.length == 0){
+
+        novoId = 1;
+
+    } else {
+
+        novoId = arrayTarefas[arrayTarefas.length -1 ].id + 1;
+    }
+    
+    return novoId;
 }
 
 const addTarefasArray = (textoTarefa) => {
 
     let tarefa = {
 
-        id: 0,
+        id: geradorId() ,
         texto: textoTarefa,
         feito: false
     }
@@ -55,18 +89,34 @@ const addTarefasArray = (textoTarefa) => {
     return tarefa;
 }
 
+const removerTarefa = (id) => {
+
+    let posicao = arrayTarefas.findIndex( arrayTarefas => arrayTarefas.id = id);
+    arrayTarefas.splice(posicao, 1);
+
+    localStorage.setItem(chaveLocal, JSON.stringify(arrayTarefas));
+
+    let liTarefa = document.getElementById(`li_${id}`);
+    liTarefa.remove();
+
+}
+
 const exibirTarefa = (tarefa) => {
 
     let novoLi = document.createElement('li');
 
+    novoLi.setAttribute('id', `li_${tarefa.id}`);
+
     novoLi.innerHTML = `
-    <input type="checkbox" id="check_1">
-    <label for="check_1">${tarefa.texto.toUpperCase()}</label>
-    <i class="material-icons">delete</i>
+    <input type="checkbox" id="check_${tarefa.id}">
+    <label for="check_${tarefa.id}"> ${tarefa.texto.toUpperCase()} </label>
+    <i class="material-icons" onclick ="removerTarefa(${tarefa.id})">delete</i>
     `
     listaUl.appendChild(novoLi);    
 
 }
+
+
 
 // EVENT HANDLER - MANIPULADOR DE EVENTO
  window.addEventListener('load', loadTarefas);
