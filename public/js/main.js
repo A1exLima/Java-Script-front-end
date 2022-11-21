@@ -17,10 +17,12 @@
 const btnSalvar = document.getElementById('btn');
 const formTexto = document.getElementById('text');
 const listaUl = document.getElementById('task-list');
+const ulErrors = document.querySelector('.errors ul');
 
 //DEFINICOES INICIAIS
 let arrayTarefas = [];
 let chaveLocal = "boxTarefas";
+
 
 //FUNCOES DE EXECUCAO
 const loadTarefas = () => {
@@ -43,17 +45,50 @@ const loadTarefas = () => {
     formTexto.focus();
 }
 
+const validacoes = (textoTarefa) => {
+
+    formTexto.style.border = "#3e6e6c dotted 2px";
+    errors.push('Campo vazio!');
+
+    for(let i = 0; i < errors.length; i++){
+
+        ulErrors.innerHTML += `<li> ${errors[i]} </li>`;
+    }
+
+}
+
 const clickSalvar = (event) => {
 
     event.preventDefault();
 
     let textoTarefa = formTexto.value;
 
-    let tarefa = addTarefasArray(textoTarefa);
+    console.log(textoTarefa.length);
 
-    exibirTarefa(tarefa);
+    if(textoTarefa.length === 0){
 
-    formTexto.value = null;
+        formTexto.style.border = "#3e6e6c dotted 2px";
+
+        let errors = "CAMPO VAZIO!";
+
+        const ulErrors = document.querySelector('.errors ul');
+
+        ulErrors.innerHTML = `<li> ${errors} </li>`;
+
+        event.preventDefault();
+
+    } else {
+
+        ulErrors.innerHTML = " ";
+
+        formTexto.style.border = "white solid 2px";
+
+        let tarefa = addTarefasArray(textoTarefa);
+
+        exibirTarefa(tarefa);
+
+        formTexto.value = null;
+    }
     
 }
 
@@ -101,14 +136,26 @@ const removerTarefa = (id) => {
 
 }
 
+const tarefaAlterada = (id) => {
+
+    let tarefa = arrayTarefas.find( arrayTarefas => arrayTarefas.id == id)
+
+    tarefa.feito = !tarefa.feito;
+
+    localStorage.setItem(chaveLocal, JSON.stringify(arrayTarefas));
+
+}
+
 const exibirTarefa = (tarefa) => {
 
     let novoLi = document.createElement('li');
 
     novoLi.setAttribute('id', `li_${tarefa.id}`);
 
+    let checked = tarefa.feito ? 'checked' : '';
+
     novoLi.innerHTML = `
-    <input type="checkbox" id="check_${tarefa.id}">
+    <input type="checkbox" ${checked} id="check_${tarefa.id} "onclick = "tarefaAlterada(${tarefa.id})"  >
     <label for="check_${tarefa.id}"> ${tarefa.texto.toUpperCase()} </label>
     <i class="material-icons" onclick ="removerTarefa(${tarefa.id})">delete</i>
     `
