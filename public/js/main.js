@@ -45,25 +45,11 @@ const loadTarefas = () => {
     formTexto.focus();
 }
 
-const validacoes = (textoTarefa) => {
-
-    formTexto.style.border = "#3e6e6c dotted 2px";
-    errors.push('Campo vazio!');
-
-    for(let i = 0; i < errors.length; i++){
-
-        ulErrors.innerHTML += `<li> ${errors[i]} </li>`;
-    }
-
-}
-
 const clickSalvar = (event) => {
 
     event.preventDefault();
 
     let textoTarefa = formTexto.value;
-
-    console.log(textoTarefa.length);
 
     if(textoTarefa.length === 0){
 
@@ -75,7 +61,7 @@ const clickSalvar = (event) => {
 
         ulErrors.innerHTML = `<li> ${errors} </li>`;
 
-        event.preventDefault();
+        //event.preventDefault();
 
     } else {
 
@@ -162,8 +148,6 @@ const exibirTarefa = (tarefa) => {
     listaUl.appendChild(novoLi);    
 
 }
-
-
 
 // EVENT HANDLER - MANIPULADOR DE EVENTO
  window.addEventListener('load', loadTarefas);
